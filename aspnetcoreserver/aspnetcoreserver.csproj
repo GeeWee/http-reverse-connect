@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BetterHostedServices" Version="2.0.1" />
+    <PackageReference Include="SCM.SwissArmyKnife" Version="1.4.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    <PackageReference Include="WatsonWebsocket" Version="2.3.0" />
+  </ItemGroup>
+
+</Project>
