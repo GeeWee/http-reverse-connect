@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using SCM.SwissArmyKnife.Extensions;
 using WatsonWebsocket;
 
 namespace client
@@ -24,7 +25,8 @@ namespace client
         {
             server.MessageReceived += MessageReceived;
 
-            var call = new RpcCall(url, HttpMethod.Get.ToString(), new Dictionary<string, string>(), Body: new Dictionary<string, object>());
+            var call = new RpcCall(url, HttpMethod.Get.ToString(), new Dictionary<string, string>(),
+                Body: new Dictionary<string, object>());
             await server.SendAsync(ClientIpPort, JsonSerializer.Serialize(call));
 
             for (int i = 0; i < 10; i++)
@@ -37,28 +39,40 @@ namespace client
                 }
                 else
                 {
-                    return JsonSerializer.Deserialize<T>(this._message);
+                    var message = JsonSerializer.Deserialize<RpcCallResponse<T>>(this._message);
+                    Console.WriteLine(message);
+                    Console.WriteLine(message.headers.ToIndentedJson());
+                    return message.body;
                 }
             }
 
             Console.WriteLine("No message received within timeout");
             throw new Exception("No message received");
         }
-        
-        
-        async void MessageReceived(object sender, MessageReceivedEventArgs args) 
+
+
+        async void MessageReceived(object sender, MessageReceivedEventArgs args)
         {
             var data = Encoding.UTF8.GetString(args.Data);
+            
+            
+            
             Console.WriteLine(data);
             // todo id validation
             this._message = data;
         }
-        
     }
 
-    public record RpcCall(string Url, string Method, Dictionary<string, string> Headers, Dictionary<string, object> Body);
+    public record RpcCall(string Url, string Method, Dictionary<string, string> Headers,
+        Dictionary<string, object> Body);
 
     // public record RpcCall(string Url, Guid id);
 
-    public record RpcCallResponse<T>(string Url, Guid id, T data);    
+    public record RpcCallResponse<T>(
+        string url,
+        string method,
+        int statusCode,
+        T body,
+        Dictionary<string, string> headers
+    );
 }

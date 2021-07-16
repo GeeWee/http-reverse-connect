@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "tsnd --respawn index.ts"
+    "dev": "tsnd --respawn server-proxy.ts"
   },
   "devDependencies": {
     "ts-node-dev": "^1.1.8",

@@ -24,18 +24,34 @@ ws.on('message', async function incoming(message: string) {
     console.log(axiosConfig);
     const response = await axios(axiosConfig);
     
-    // console.log(response);
+    
+    const rpcResponse: RpcResponse = {
+        url: rpcCall.Url,
+        body: response.data,
+        method: rpcCall.Method,
+        statusCode: response.status,
+        headers: response.headers
+    }
+    
 
-    ws.send(JSON.stringify(response.data));
+    ws.send(JSON.stringify(rpcResponse));
 
 });
+
+interface RpcResponse {
+    url: string,
+    method: "GET" | "POST" | "PUT" | "PATCH"
+    statusCode: number,
+    body: any
+    headers: Record<string, string>
+}
 
 interface RpcCall {
     Url: string,
     Method: "GET" | "POST" | "PUT" | "PATCH",
     Headers: Record<string, string>,
     // TODO body could be array too
-    Body: Record<string, any> | Array<any>
+    Body: Record<string, any> | Array<any>,
 }
 
 // todo return rpccall
