@@ -37,3 +37,5 @@ interface RpcCall {
     // TODO body could be array too
     Body: Record<string, any> | Array<any>
 }
+
+// todo return rpccall
