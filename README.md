@@ -32,6 +32,8 @@ See diagram below:
 
 ![arch](arch.png)
 
+An implementation of such a websocket-proxy server is in the branch "feature/rest-over-websockets"
+
 Technically the "WS" server on the client-side could probably also be a standalone-server that proxied REST requests on the websocket connection,
 which then only maintained the websocket connections. 
 
