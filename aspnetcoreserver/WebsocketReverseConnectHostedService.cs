@@ -54,9 +54,10 @@ namespace aspnetcoreserver
                 // todo map on protocol
                 // Map websocket remote procedure call to internal http
                 using var httpClient = _httpClientFactory.CreateClient();
+
+                // TODO here we'd probably have some sort of whitelist of URLs you were allowed to call
                 
                 // TODO get baseurl + port in some non-hardcoded way
-
                 var url = $"http://localhost:5000{deserialized.Url}";
                 Console.WriteLine($"Calling HTTP with {url}");
                 var response = await httpClient.GetAsync(url);
