@@ -1,7 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using WatsonWebsocket;
 
@@ -23,7 +24,7 @@ namespace client
         {
             server.MessageReceived += MessageReceived;
 
-            var call = new RpcCall(url, Guid.NewGuid());
+            var call = new RpcCall(url, HttpMethod.Get.ToString(), new Dictionary<string, string>(), Body: new Dictionary<string, object>());
             await server.SendAsync(ClientIpPort, JsonSerializer.Serialize(call));
 
             for (int i = 0; i < 10; i++)
@@ -40,6 +41,7 @@ namespace client
                 }
             }
 
+            Console.WriteLine("No message received within timeout");
             throw new Exception("No message received");
         }
         
@@ -54,7 +56,9 @@ namespace client
         
     }
 
-    public record RpcCall(string Url, Guid id);
+    public record RpcCall(string Url, string Method, Dictionary<string, string> Headers, Dictionary<string, object> Body);
+
+    // public record RpcCall(string Url, Guid id);
 
     public record RpcCallResponse<T>(string Url, Guid id, T data);    
 }

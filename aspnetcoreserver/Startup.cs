@@ -37,7 +37,7 @@ namespace aspnetcoreserver
             });
 
             services.AddBetterHostedServices();
-            services.AddHostedService<WebsocketReverseConnectHostedService>();
+            // services.AddHostedService<WebsocketReverseConnectHostedService>();
             services.AddHttpClient();
 
         }

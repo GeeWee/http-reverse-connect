@@ -6,7 +6,7 @@ using client;
 using SCM.SwissArmyKnife.Extensions;
 using WatsonWebsocket;
 
-WatsonWsServer server = new WatsonWsServer("localhost", 8081, false);
+WatsonWsServer server = new WatsonWsServer("127.0.0.1", 8081, false);
 server.ClientConnected += ClientConnected;
 server.ClientDisconnected += ClientDisconnected;
 server.MessageReceived += MessageReceived; 
@@ -19,7 +19,7 @@ async void ClientConnected(object sender, ClientConnectedEventArgs args)
     var reverseHttpClient = new ReverseConnectHttpClient(server, args.IpPort);
 
     Console.WriteLine("Sending http request");
-    var response = await reverseHttpClient.GetAsync<object>("/weather");
+    var response = await reverseHttpClient.GetAsync<object>("http://localhost:5000/weather");
     Console.WriteLine($"Server response");
     Console.WriteLine(response);
 }
@@ -34,6 +34,8 @@ async void MessageReceived(object sender, MessageReceivedEventArgs args)
     Console.WriteLine("Message received from " + args.IpPort + ": " + Encoding.UTF8.GetString(args.Data));
 
     var data = Encoding.UTF8.GetString(args.Data);
+    
+    
 }
 
 
