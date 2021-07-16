@@ -23,6 +23,19 @@ After the REST request is finished, the result is "proxied" back over the websoc
 This isn't even close to being production-grade code, but it does demonstrate that REST over outbound connections
 can be performed.
 
+# Alternative architecture
+
+Instead of needing to add something on the server, it's possible to add a websocket-proxy that establishes the connection, and just
+proxies it to REST-requests. The ws-proxy could then have a white-list of allowed endpoints to call.
+
+See diagram below:
+
+![arch](arch.png)
+
+Technically the "WS" server on the client-side could probably also be a standalone-server that proxied REST requests on the websocket connection,
+which then only maintained the websocket connections. 
+
+Having them as standalone services means higher overhead, but it also means that clients and servers don't need to care that their communication is going on via WS - to them it's just "regular" http calls.
 
 # Limitations
 There's no retry ability currently. To try out the code you have to (in this order)
